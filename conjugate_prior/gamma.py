@@ -21,7 +21,16 @@ class GammaExponential:
             alpha = lamda * beta
         self.alpha = alpha
         self.beta = beta
-
+    def __iadd__(self, other):
+        if isinstance(other, GammaExponential):
+            self.alpha += other.alpha
+            self.beta += other.beta
+        elif isinstance(other, float):
+            self.alpha += 1
+            self.beta += other
+        else:
+            raise TypeError("Unsupported type")
+        return self
     def update(self, *args):
         if len(args) == 1:
             return GammaExponential(self.alpha + len(args[0]), self.beta + sum(args[0]))
@@ -64,6 +73,9 @@ class GammaExponential:
     def sample(self,n=1):
         lamda = np.random.gamma(self.alpha, 1/self.beta)
         return np.random.exponential(1/lamda,n)
+    
+    def percentile(self, p):
+        return stats.gamma.ppf(p, self.alpha, scale=1.0 / self.beta)
 
 
 class GammaPoisson(GammaExponential):

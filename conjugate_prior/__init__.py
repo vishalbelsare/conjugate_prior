@@ -3,4 +3,5 @@ from .gamma import *
 from .beta import *
 from .normal import *
 from .invgamma import *
-__version__ = '0.61'
+from .prior import ConjugatePrior, BetaBinomialRanker, GammaExponentialRanker
+__version__ = '0.85'
